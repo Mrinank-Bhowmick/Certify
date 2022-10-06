@@ -57,14 +57,14 @@ def read_csv():
             name, course, date, certificate_number = row
             generate_certificate(name, course, date, certificate_number)
 
-def create_directory():
-    if os.path.isdir('certificates'):
-        print('Directory exits')
+def create_directory(path):
+    if os.path.isdir(path):
+        print(f"{path} directory exits")
     else:
-        os.mkdir('certificates')
+        os.mkdir(path)
 
 def run():
-    create_directory()
+    create_directory('certificates')
     read_csv()
 
     
