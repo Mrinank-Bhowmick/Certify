@@ -50,13 +50,6 @@ def generate_certificate(name, course, date, certificate_number):
 
     certificate.save(certificate_path)
 
-def read_csv():
-    with open(data_path, newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        for row in csv_reader:
-            name, course, date, certificate_number = row
-            generate_certificate(name, course, date, certificate_number)
-
 def create_directory(path):
     if os.path.isdir(path):
         print(f"{path} directory exits")
@@ -65,7 +58,12 @@ def create_directory(path):
 
 def run():
     create_directory('certificates')
-    read_csv()
+
+    with open(data_path, newline='') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            name, course, date, certificate_number = row
+            generate_certificate(name, course, date, certificate_number)
 
     
 
