@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-from PIL import Image, ImageDraw, ImageFont
 import os
 import csv
+from PIL import Image, ImageDraw, ImageFont
 
 template_path = 'template/certificate_template.png'
 font_path = 'font/arial.ttf'
