@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import os
 import csv
+import argparse
+import pathlib
 from PIL import Image, ImageDraw, ImageFont
+
 
 class CertificateGenerator(object):
     def __init__(self, template_path, font_path, certificate_path):
@@ -15,9 +18,9 @@ class CertificateGenerator(object):
     
         certificate = Image.open(self.template_path)
         draw = ImageDraw.Draw(certificate)
-        font = ImageFont.truetype(self.font_path, size=50)
-        date_font = ImageFont.truetype(self.font_path, size=30)
-        certificate_number_font = ImageFont.truetype(self.font_path, size=30)
+        font = ImageFont.truetype(str(self.font_path), size=50)
+        date_font = ImageFont.truetype(str(self.font_path), size=30)
+        certificate_number_font = ImageFont.truetype(str(self.font_path), size=30)
     
         width, height = certificate.size
     
@@ -58,16 +61,20 @@ def create_directory(path):
         os.mkdir(path)
 
 def run():
-    template_path = 'template/certificate_template.png'
-    font_path = 'font/arial.ttf'
-    certificate_path = 'certificates/certificate.png'
-    data_path = 'data/data.csv'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--template_path', type=pathlib.Path, required=False, default='template/certificate_template.png')
+    parser.add_argument('--font_path', type=pathlib.Path, default='font/arial.ttf')
+    parser.add_argument('--certificate_path', type=pathlib.Path, default='certificates/certificate.png')
+    parser.add_argument('--data_path', type=pathlib.Path, default='data/data.csv')
 
-    create_directory('certificates')
+    args = parser.parse_args()
 
-    generator = CertificateGenerator(template_path, font_path, certificate_path)
+    certificates_directory = os.path.dirname(args.certificate_path)
+    create_directory(certificates_directory)
 
-    with open(data_path, newline='') as csv_file:
+    generator = CertificateGenerator(args.template_path, args.font_path, args.certificate_path)
+
+    with open(args.data_path, newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
             name, course, date, certificate_number = row
