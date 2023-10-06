@@ -3,7 +3,8 @@ name: Update README
 on:
   schedule:
     - cron: '0 * * * *'  # Runs every hour; change as needed
-
+  issues:
+    types: [opened]
 jobs:
   update_readme:
     runs-on: ubuntu-latest
