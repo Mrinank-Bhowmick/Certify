@@ -16,27 +16,33 @@ def get_followers_avatar():
         followers.extend(page_followers)
         page += 1
 
-    readme = open('README.md', 'w')
-    readme.write("# My Followers\n\n")
+    with open('README.md', 'r') as file:
+        readme_content = file.readlines()
 
-    readme.write("<table>\n<tr>\n")
+    followers_info = "\n<table>\n<tr>\n"
     for i, follower in enumerate(followers[:20]):
         if i > 0 and i % 10 == 0:
-            readme.write("</tr>\n<tr>\n")
-        readme.write(f'<td align="center"><a href="https://github.com/{follower["login"]}"><img src="{follower["avatar_url"]}&s=50" width="50" height="50" alt="{follower["login"]}" /><br />@{follower["login"]}</a></td>\n')
-    readme.write("</tr>\n</table>")
+            followers_info += "</tr>\n<tr>\n"
+        followers_info += f'<td align="center"><a href="https://github.com/{follower["login"]}"><img src="{follower["avatar_url"]}&s=50" width="50" height="50" alt="{follower["login"]}" /><br />@{follower["login"]}</a></td>\n'
+    followers_info += "</tr>\n</table>"
 
-    readme.write("\n<details><summary>🔽 Show more</summary>\n\n")
+    followers_info += "\n<details><summary>Show more</summary>\n\n"
 
-    readme.write("<table>\n<tr>\n")
+    followers_info += "<table>\n<tr>\n"
     for i, follower in enumerate(followers[20:]):
         if i > 0 and i % 10 == 0:
-            readme.write("</tr>\n<tr>\n")
-        readme.write(f'<td align="center"><a href="https://github.com/{follower["login"]}"><img src="{follower["avatar_url"]}&s=50" width="70" height="70" alt="{follower["login"]}" /><br />@{follower["login"]}</a></td>\n')
-    readme.write("</tr>\n</table>")
+            followers_info += "</tr>\n<tr>\n"
+        followers_info += f'<td align="center"><a href="https://github.com/{follower["login"]}"><img src="{follower["avatar_url"]}&s=50" width="70" height="70" alt="{follower["login"]}" /><br />@{follower["login"]}</a></td>\n'
+    followers_info += "</tr>\n</table>"
 
-    readme.write("\n</details>")
-    
-    readme.close()
+    followers_info += "\n</details>"
+
+    for i, line in enumerate(readme_content):
+        if '<!--Show_followers_here-->' in line:
+            readme_content.insert(i+1, followers_info)
+            break
+
+    with open('README.md', 'w') as file:
+        file.writelines(readme_content)
 
 get_followers_avatar()
