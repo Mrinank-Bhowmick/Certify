@@ -11,9 +11,10 @@ def get_followers_avatar():
 
     readme = open('README.md', 'w')
     readme.write("# My Followers\n\n")
+    readme.write("<style>\n.circle-avatar {\nborder-radius: 50%;\nwidth: 100px;\nheight: 100px;\n}\n</style>\n\n")
 
     for follower in followers:
-        readme.write(f"![{follower['login']}]({follower['avatar_url']}&s=100)\n")
+        readme.write(f'<img class="circle-avatar" src="{follower["avatar_url"]}&s=100" alt="{follower["login"]}">\n')
 
     readme.close()
 
